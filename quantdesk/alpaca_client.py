@@ -143,10 +143,17 @@ class AlpacaClient:
         timeout: int = 10,
         paper: bool = True,
     ):
-        self.api_key    = api_key    or os.getenv("ALPACA_API_KEY", "")
-        self.api_secret = api_secret or os.getenv("ALPACA_API_SECRET", "")
-        self.timeout    = timeout
-        self.paper      = paper
+        # Try Streamlit secrets first, then environment variables
+        try:
+            import streamlit as st
+            self.api_key    = api_key    or st.secrets.get("ALPACA_API_KEY", "")    or os.getenv("ALPACA_API_KEY", "")
+            self.api_secret = api_secret or st.secrets.get("ALPACA_API_SECRET", "") or os.getenv("ALPACA_API_SECRET", "")
+        except Exception:
+            self.api_key    = api_key    or os.getenv("ALPACA_API_KEY", "")
+            self.api_secret = api_secret or os.getenv("ALPACA_API_SECRET", "")
+
+        self.timeout = timeout
+        self.paper   = paper
 
         self._headers = {
             "APCA-API-KEY-ID":     self.api_key,
@@ -435,3 +442,4 @@ class AlpacaClient:
 PolymarketClient   = AlpacaClient
 PolymarketMarket   = StockMarket
 PolymarketOrderBook = StockOrderBook
+
