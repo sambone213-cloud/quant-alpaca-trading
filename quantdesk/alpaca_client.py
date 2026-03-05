@@ -162,6 +162,8 @@ class AlpacaClient:
         }
 
     def _has_keys(self) -> bool:
+        import streamlit as st
+        st.write(f"DEBUG key starts with: {self.api_key[:6] if self.api_key else 'EMPTY'}")
         return bool(self.api_key and self.api_secret)
 
     def _data_get(self, path: str, params: dict = None) -> dict:
