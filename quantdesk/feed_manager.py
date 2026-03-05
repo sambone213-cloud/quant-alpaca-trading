@@ -17,8 +17,7 @@ from collections import deque
 from dataclasses import dataclass, field
 from typing import Callable, Deque, Dict, List, Optional, Tuple
 
-from polymarket_client import PolymarketClient, PolymarketOrderBook
-
+from alpaca_client import AlpacaClient as PolymarketClient, StockOrderBook as PolymarketOrderBook
 
 @dataclass
 class ContractConfig:
